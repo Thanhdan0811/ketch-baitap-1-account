@@ -20,8 +20,10 @@ public class Main {
                     break;
                 case 3:
                     manageAccount.printDetailCurrentAccount(sc);
+                    break;
                 case 4:
                     manageAccount.printDetailSavingAccount(sc);
+                    break;
                 case 5:
                     manageAccount.addCurrentAccout(sc);
                     break;
