@@ -36,4 +36,10 @@ public class CurrentAccount extends AccoutAbstract implements Account{
     public double getOverDraftLimit() {
         return overDraftLimit;
     }
+
+    public void printCurrentAccount() {
+        System.out.println("Current Account");
+        System.out.println("Initial Deposit: $" + String.format("%.2f", this.getBalanceAccount()));
+        System.out.println("Overdraft Limit: $" + String.format("%.2f", this.getOverDraftLimit()));
+    }
 }

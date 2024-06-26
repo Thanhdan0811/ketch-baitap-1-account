@@ -21,7 +21,7 @@ public class ManageAccount {
                     acc.getIdBank() +
                     " || số dư hiện tại: " +
                     acc.getBalanceAccount() +
-                    " || Hạn mức rút" +
+                    " || Hạn mức rút: " +
                     acc.getOverDraftLimit());
         }
     }
@@ -35,7 +35,7 @@ public class ManageAccount {
                     acc.getIdBank() +
                     " || số dư hiện tại: " +
                     acc.getBalanceAccount() +
-                    " || % lãi suất" +
+                    " || % lãi suất: " +
                     acc.getInterestRate());
         }
     }
@@ -64,9 +64,9 @@ public class ManageAccount {
         int iDbank;
         double initialBalance;
         double hanMucRut;
-        name = InputHelper.inputString("Nhập tên chủ tài khoản", sc);
+        name = InputHelper.inputString("Nhập tên chủ tài khoản: ", sc);
         while (true) {
-            initialBalance = InputHelper.inputDouble("Số tiền gửi hiện tại", sc);
+            initialBalance = InputHelper.inputDouble("Số tiền gửi hiện tại: ", sc);
             if(initialBalance < 0) {
                 System.out.println("Số tiền nhập chưa hợp lệ");
                 continue;
@@ -74,7 +74,7 @@ public class ManageAccount {
             break;
         }
         while (true) {
-            hanMucRut = InputHelper.inputDouble("Hạn mức rút", sc);
+            hanMucRut = InputHelper.inputDouble("Hạn mức rút: ", sc);
             if(hanMucRut < 0) {
                 System.out.println("Số hạn mức nhập chưa hợp lệ");
                 continue;
@@ -95,9 +95,9 @@ public class ManageAccount {
         int iDbank;
         double initialBalance;
         float interestRate;
-        name = InputHelper.inputString("Nhập tên chủ tài khoản", sc);
+        name = InputHelper.inputString("Nhập tên chủ tài khoản: ", sc);
         while (true) {
-            initialBalance = InputHelper.inputDouble("Số tiền gửi tiết kiệm", sc);
+            initialBalance = InputHelper.inputDouble("Số tiền gửi tiết kiệm: ", sc);
             if(initialBalance < 0) {
                 System.out.println("Số tiền nhập chưa hợp lệ");
                 continue;
@@ -105,7 +105,7 @@ public class ManageAccount {
             break;
         }
         while (true) {
-            interestRate = InputHelper.inputFloat("Tỷ lệ lãi suất", sc);
+            interestRate = InputHelper.inputFloat("Tỷ lệ lãi suất: ", sc);
             if(interestRate < 0) {
                 System.out.println("Tỷ lệ lãi suất chưa hợp lệ");
                 continue;
@@ -118,6 +118,129 @@ public class ManageAccount {
 
         this.listSavingAccounts.add(savingsAccount);
         this.printListSavingsAccounts();
+
+    }
+
+    private CurrentAccount getAccountFromListCurrent(int iDBank) {
+        for(CurrentAccount acc: this.listCurrentAccounts) {
+            if(acc.getIdBank() == iDBank) return acc;
+        }
+        return null;
+    }
+    private SavingsAccount getAccountFromListSavings(int iDBank) {
+        for(SavingsAccount acc: this.listSavingAccounts) {
+            if(acc.getIdBank() == iDBank) return acc;
+        }
+        return null;
+    }
+
+    public void printDetailCurrentAccount(Scanner sc) {
+        if(this.listCurrentAccounts.isEmpty()) {
+            System.out.println("Hiện chưa có account nào.");
+            return;
+        }
+        int iDBank;
+        CurrentAccount acc;
+        while (true) {
+            iDBank = InputHelper.inputInt("Nhập mã tài khoản hiện tại (0 để thoát): ", sc);
+            if(iDBank == 0) return;
+            acc = getAccountFromListCurrent(iDBank);
+            if(acc == null) continue;
+            break;
+        }
+
+        acc.printCurrentAccount();
+
+        int luaChon;
+        while (true) {
+            printLuaChonDetail("Current");
+            luaChon = sc.nextInt();
+            if(luaChon == 0) return;
+            switch (luaChon) {
+                case 1:
+                    napTienVaoAccount(acc, null, sc);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    System.out.println("Lựa chọn chưa phù hợp");
+            }
+
+        }
+    }
+
+    private void napTienVaoAccount(CurrentAccount curAcc, SavingsAccount svAcc,Scanner sc) {
+        double amount;
+        while (true) {
+            amount = InputHelper.inputDouble("Số tiền nạp vào: ", sc);
+            if(amount < 0) {
+                System.out.println("Số tiền nhập chưa hợp lệ.");
+                continue;
+            }
+            break;
+        }
+        if(curAcc != null) {
+            curAcc.setAccountBalance(curAcc.getBalanceAccount() + amount);
+            return;
+        }
+        if(svAcc != null) {
+            svAcc.setAccountBalance(svAcc.getBalanceAccount() + amount);
+            return;
+        }
+    }
+
+    public void printDetailSavingAccount(Scanner sc) {
+        if(this.listSavingAccounts.isEmpty()) {
+            System.out.println("Hiện chưa có account nào.");
+            return;
+        }
+        int iDBank;
+        SavingsAccount acc;
+        while (true) {
+            iDBank = InputHelper.inputInt("Nhập mã tài khoản hiện tại (0 để thoát): ", sc);
+            if(iDBank == 0) return;
+            acc = getAccountFromListSavings(iDBank);
+            if(acc == null) continue;
+            break;
+        }
+
+        acc.printSavingsAccount();
+
+        int luaChon;
+        while (true) {
+            printLuaChonDetail("Savings");
+            luaChon = sc.nextInt();
+            if(luaChon == 0) return;
+            switch (luaChon) {
+                case 1:
+                    napTienVaoAccount(null, acc, sc);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    System.out.println("Lựa chọn chưa phù hợp");
+            }
+
+        }
+
+    }
+
+    private void printLuaChonDetail(String typeAccount) {
+        System.out.println();
+        System.out.println("Bạn cần gì ?");
+        System.out.println("1.Nạp tiền vào tk.");
+        System.out.println("2.Rút tiền từ tk.");
+        System.out.println("3.Xem số dư tk.");
+        if(typeAccount == "Savings") {
+            System.out.println("4.Xem số dư sau lãi suất.");
+        }
+        System.out.println("0.Để thoát.");
 
     }
 

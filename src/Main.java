@@ -18,6 +18,10 @@ public class Main {
                 case 2:
                     manageAccount.printListSavingsAccounts();
                     break;
+                case 3:
+                    manageAccount.printDetailCurrentAccount(sc);
+                case 4:
+                    manageAccount.printDetailSavingAccount(sc);
                 case 5:
                     manageAccount.addCurrentAccout(sc);
                     break;

@@ -36,4 +36,10 @@ public class SavingsAccount extends AccoutAbstract implements Account{
         return this.accountBalance;
     }
 
+    public void printSavingsAccount() {
+        System.out.println("Savings Account");
+        System.out.println("Initial Deposit: $" + String.format("%.2f", this.getBalanceAccount()));
+        System.out.println("Interest rate: " + String.format("%.2f", this.getInterestRate()) + "%");
+    }
+
 }
